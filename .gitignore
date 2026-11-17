@@ -1,0 +1,37 @@
+# Dependencies
+node_modules/
+
+# Local environment and credentials
+.env
+.env.*
+!.env.example
+!.env.*.example
+.npmrc
+!.npmrc.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+*.secret
+secrets/
+credentials/
+
+# Local editor, assistant, cache, and OS metadata
+.vscode/
+.idea/
+.codex/
+.agents/
+.cache/
+tmp/
+.DS_Store
+Thumbs.db
+
+# Test/build output and logs
+cypress/screenshots/
+cypress/videos/
+coverage/
+.nyc_output/
+*.log
+npm-debug.log*

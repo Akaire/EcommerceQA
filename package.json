@@ -1,0 +1,15 @@
+{
+  "name": "viva-loja-qa",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Loja demonstrativa com suíte E2E Cypress",
+  "scripts": {
+    "start": "node server.cjs",
+    "cy:open": "node scripts/cypress-runner.cjs open",
+    "cy:run": "node scripts/cypress-runner.cjs run",
+    "test": "npm run cy:run"
+  },
+  "devDependencies": {
+    "cypress": "^15.17.0"
+  }
+}
