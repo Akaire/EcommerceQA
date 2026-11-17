@@ -46,8 +46,4 @@ Busca, estado vazio, filtro de cada categoria, ordenação, persistência da sac
 
 Os pedidos são simulados no navegador. Não há backend, API, estoque ou pagamento real.
 
-## Publicação no Git
-
-Inicialize o Git somente nesta pasta (`Viva-QA`), não numa pasta pai que contenha outros projetos. Antes de publicar, confira a lista preparada para commit com `git status --short` e `git diff --cached --name-only`. Dependências, credenciais locais, configurações de editor, pastas de apoio local e resultados gerados estão no `.gitignore`.
-
 
