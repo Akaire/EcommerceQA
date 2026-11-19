@@ -1,45 +1,29 @@
 {
-  "products": {
-    "mug": { "name": "Caneca Aurora", "priceLabel": "R$ 68,00" },
-    "bag": { "name": "Bolsa Horizonte" },
-    "vase": { "name": "Vaso Botânico" },
-    "bottle": { "name": "Garrafa Brisa" },
-    "notebook": { "name": "Caderno Raiz" },
-    "glasses": { "name": "Óculos Sol" },
-    "blanket": { "name": "Manta Nuvem" },
-    "pauseKit": { "name": "Kit Pausa" }
-  },
   "catalog": {
-    "initialProductCount": 8,
-    "searchResultCount": 1,
-    "categories": [
-      { "name": "Casa", "productCount": 3, "products": ["mug", "vase", "blanket"] },
-      { "name": "Acessórios", "productCount": 2, "products": ["bag", "glasses"] },
-      { "name": "Bem-estar", "productCount": 2, "products": ["bottle", "pauseKit"] },
-      { "name": "Papelaria", "productCount": 1, "products": ["notebook"] }
-    ],
-    "priceSort": {
-      "lowestProductKey": "notebook",
-      "highestProductKey": "blanket"
-    },
     "nonMatchingSearch": "produto-que-nao-existe",
     "emptyResultsMessage": "Nenhum produto encontrado"
   },
   "cart": {
     "quantityAfterAdd": 1,
     "quantityAfterIncrease": 2,
-    "quantityAfterOrder": 0,
-    "subtotalAfterIncrease": "R$ 136,00"
+    "quantityAfterOrder": 0
   },
   "shipping": {
-    "freeShippingProductKeys": ["mug", "vase", "notebook"],
-    "freeShippingSubtotal": "R$ 199,00",
+    "freeShippingProductKeys": [
+      "mug",
+      "vase",
+      "notebook"
+    ],
     "freeShippingMessage": "Você ganhou frete grátis!",
     "belowThresholdMessage": "Faltam R$ 131,00 para ganhar frete grátis."
   },
   "checkout": {
-    "onePerCategoryProductKeys": ["mug", "bag", "bottle", "notebook"],
-    "subtotalOnePerCategory": "R$ 371,00",
+    "onePerCategoryProductKeys": [
+      "mug",
+      "bag",
+      "bottle",
+      "notebook"
+    ],
     "secondaryBuyerProductKey": "vase",
     "buyers": [
       {
@@ -55,7 +39,11 @@
         "cep": "22041001"
       }
     ],
-    "invalidEmails": ["email-invalido", "qa@", "@viva.com"],
+    "invalidEmails": [
+      "email-invalido",
+      "qa@",
+      "@viva.com"
+    ],
     "invalidCep": "12345",
     "invalidCepMessage": "CEP com 8 números",
     "successMessage": "Obrigado pela compra!"

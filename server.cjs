@@ -3,7 +3,13 @@ const fs = require('node:fs')
 const path = require('node:path')
 
 const root = __dirname
-const indexFile = path.join(root, 'index.html')
+const publicFiles = new Map([
+  ['/', ['index.html', 'text/html; charset=utf-8']],
+  ['/index.html', ['index.html', 'text/html; charset=utf-8']],
+  ['/styles.css', ['styles.css', 'text/css; charset=utf-8']],
+  ['/app.js', ['app.js', 'text/javascript; charset=utf-8']],
+  ['/catalog.json', ['catalog.json', 'application/json; charset=utf-8']],
+])
 const port = Number(process.env.PORT || 4173)
 
 function createServer() {
@@ -26,18 +32,20 @@ function createServer() {
       return
     }
 
-    // The demo needs only one public resource; never expose project files via this server.
-    if (pathname !== '/' && pathname !== '/index.html') {
+    // Serve only the explicit browser assets; never expose arbitrary project files.
+    const asset = publicFiles.get(pathname)
+    if (!asset) {
       res.writeHead(404).end('Not found')
       return
     }
 
-    fs.readFile(indexFile, (error, content) => {
+    const [fileName, contentType] = asset
+    fs.readFile(path.join(root, fileName), (error, content) => {
       if (error) {
         res.writeHead(500).end('Unable to load the demo')
         return
       }
-      res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' })
+      res.writeHead(200, { 'Content-Type': contentType, 'Cache-Control': 'no-cache' })
       res.end(req.method === 'HEAD' ? undefined : content)
     })
   })

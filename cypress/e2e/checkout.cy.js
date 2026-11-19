@@ -1,5 +1,6 @@
 const StorePage = require('../support/page-objects/store.page')
 const data = require('../fixtures/store.json')
+const { products, subtotalFor, formatPrice } = require('../support/catalog')
 
 describe('Finalização de compra', () => {
   const store = new StorePage()
@@ -13,14 +14,14 @@ describe('Finalização de compra', () => {
     const productKeys = data.checkout.onePerCategoryProductKeys
 
     productKeys.forEach((productKey) => {
-      store.addProduct(data.products[productKey].name)
+      store.addProduct(products[productKey].name)
     })
 
     store.openCart()
     store.cartItems().should('have.length', productKeys.length)
-    store.subtotalText().should('eq', data.checkout.subtotalOnePerCategory)
+    store.subtotalText().should('eq', formatPrice(subtotalFor(productKeys)))
     productKeys.forEach((productKey) => {
-      store.cartItem(data.products[productKey].name).should('be.visible')
+      store.cartItem(products[productKey].name).should('be.visible')
     })
 
     store.checkout()
@@ -32,7 +33,7 @@ describe('Finalização de compra', () => {
 
   buyers.slice(1).forEach((buyer) => {
     it(`finaliza pedido para ${buyer.label}`, () => {
-      const product = data.products[data.checkout.secondaryBuyerProductKey]
+      const product = products[data.checkout.secondaryBuyerProductKey]
       store.addProduct(product.name)
       store.openCart()
       store.checkout()
@@ -46,7 +47,7 @@ describe('Finalização de compra', () => {
 
   data.checkout.invalidEmails.forEach((email) => {
     it(`impede finalizar compra com email inválido: ${email}`, () => {
-      store.addProduct(data.products.mug.name)
+      store.addProduct(products.mug.name)
       store.openCart()
       store.checkout()
       store.fillCustomer({ ...buyers[0], email })
@@ -60,7 +61,7 @@ describe('Finalização de compra', () => {
   })
 
   it('mostra erro para CEP inválido e permite corrigir antes de confirmar', () => {
-    store.addProduct(data.products.mug.name)
+    store.addProduct(products.mug.name)
     store.openCart()
     store.checkout()
     store.fillCustomer({ ...buyers[0], cep: data.checkout.invalidCep })
@@ -72,4 +73,3 @@ describe('Finalização de compra', () => {
     store.orderConfirmation().should('contain', data.checkout.successMessage)
   })
 })
-

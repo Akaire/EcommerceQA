@@ -1,5 +1,6 @@
 const StorePage = require('../support/page-objects/store.page')
 const data = require('../fixtures/store.json')
+const { products, subtotalFor, formatPrice } = require('../support/catalog')
 
 describe('Sacola de compras', () => {
   const store = new StorePage()
@@ -9,21 +10,21 @@ describe('Sacola de compras', () => {
   })
 
   it('recalcula quantidade e subtotal ao incrementar e decrementar', () => {
-    const product = data.products.mug
+    const product = products.mug
     store.addProduct(product.name)
     store.openCart()
 
     store.increaseQuantity(product.name)
     store.cartCount().should('have.text', String(data.cart.quantityAfterIncrease))
-    store.subtotalText().should('eq', data.cart.subtotalAfterIncrease)
+    store.subtotalText().should('eq', formatPrice(subtotalFor(['mug', 'mug'])))
 
     store.decreaseQuantity(product.name)
     store.cartCount().should('have.text', String(data.cart.quantityAfterAdd))
-    store.subtotalText().should('eq', product.priceLabel)
+    store.subtotalText().should('eq', formatPrice(product.price))
   })
 
   it('remove o último item e desabilita a finalização', () => {
-    const product = data.products.mug
+    const product = products.mug
     store.addProduct(product.name)
     store.openCart()
     store.removeItem(product.name)
@@ -35,19 +36,17 @@ describe('Sacola de compras', () => {
   })
 
   it('concede frete grátis exatamente no limite configurado', () => {
-    data.shipping.freeShippingProductKeys.forEach((productKey) => {
-      store.addProduct(data.products[productKey].name)
-    })
+    const keys = data.shipping.freeShippingProductKeys
+    keys.forEach((key) => store.addProduct(products[key].name))
 
     store.openCart()
-    store.subtotalText().should('eq', data.shipping.freeShippingSubtotal)
+    store.subtotalText().should('eq', formatPrice(subtotalFor(keys)))
     store.shippingMessageText().should('eq', data.shipping.freeShippingMessage)
   })
 
   it('informa quanto falta para o frete grátis abaixo do limite', () => {
-    store.addProduct(data.products.mug.name)
+    store.addProduct(products.mug.name)
     store.openCart()
     store.shippingMessageText().should('eq', data.shipping.belowThresholdMessage)
   })
 })
-

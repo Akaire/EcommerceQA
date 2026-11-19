@@ -33,6 +33,10 @@ class StorePage {
     cy.get('[data-cy="category-filter"]').filter(`[data-category="${category}"]`).click()
   }
 
+  navigateToCategory(category) {
+    cy.get('[data-cy="nav-category"]').filter(`[data-category="${category}"]`).click()
+  }
+
   addProduct(name) {
     this.product(name).find('[data-cy="add-to-cart"]').click()
   }

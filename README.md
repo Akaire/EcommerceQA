@@ -30,7 +30,10 @@ A loja fica em `http://127.0.0.1:4173`.
 
 ## Estrutura
 
-- `index.html` — loja e seletores `data-cy`
+- `index.html` — estrutura semântica da loja e seletores `data-cy`
+- `styles.css` — estilos responsivos, foco visível e suporte a movimento reduzido
+- `app.js` — módulo ES nativo com carrinho, filtros e eventos delegados
+- `catalog.json` — catálogo único consumido pela loja e pelos specs Cypress
 - `server.cjs` — servidor estático local, também exportável para o runner
 - `scripts/cypress-runner.cjs` — inicia a loja e gerencia o processo Cypress
 - `cypress/e2e/` — specs separados por catálogo, categorias, sacola e checkout
@@ -42,8 +45,6 @@ A loja fica em `http://127.0.0.1:4173`.
 
 ## Cobertura
 
-Busca, estado vazio, filtro de cada categoria, ordenação, persistência da sacola, quantidade, remoção, checkout com múltiplos compradores, validação de email e CEP, e limite do frete grátis.
+Busca, estado vazio, filtro por categoria e menu, coleção Novidades, ordenação, persistência da sacola, quantidade, remoção, checkout com múltiplos compradores, validação de email e CEP, e limite do frete grátis.
 
 Os pedidos são simulados no navegador. Não há backend, API, estoque ou pagamento real.
-
-
