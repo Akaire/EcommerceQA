@@ -1,7 +1,10 @@
 class StorePage {
   visit() {
     cy.visit('/', {
-      onBeforeLoad: (window) => window.localStorage.removeItem('viva-cart'),
+      onBeforeLoad: (window) => {
+        window.localStorage.removeItem('viva-cart')
+        window.localStorage.removeItem('viva-stock')
+      },
     })
   }
 
@@ -19,6 +22,14 @@ class StorePage {
 
   product(name) {
     return this.products().contains('h3', name).parents('[data-cy="product-card"]')
+  }
+
+  stockStatus(name) {
+    return this.product(name).find('[data-cy="stock-status"]')
+  }
+
+  addButton(name) {
+    return this.product(name).find('[data-cy="add-to-cart"]')
   }
 
   search(query) {
@@ -58,7 +69,15 @@ class StorePage {
   }
 
   increaseQuantity(name) {
-    this.cartItem(name).find('[data-cy="quantity-increase"]').click()
+    this.increaseQuantityButton(name).click()
+  }
+
+  increaseQuantityButton(name) {
+    return this.cartItem(name).find('[data-cy="quantity-increase"]')
+  }
+
+  cartQuantity(name) {
+    return this.cartItem(name).find('[data-cy="cart-quantity"]')
   }
 
   decreaseQuantity(name) {
@@ -109,6 +128,10 @@ class StorePage {
 
   checkout() {
     this.checkoutButton().click()
+  }
+
+  closeCheckout() {
+    cy.get('[data-action="close-checkout"]').click()
   }
 
   fillCustomer({ name, email, cep }) {

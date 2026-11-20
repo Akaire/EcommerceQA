@@ -367,6 +367,16 @@ select {
   color:var(--muted);
   min-height:18px
 }
+.stock-status {
+  color:var(--muted);
+  font-size:11px;
+  min-height:16px;
+  margin-top:8px
+}
+.stock-status.out-of-stock {
+  color:#a43830;
+  font-weight:700
+}
 .buyrow {
   display:flex;
   align-items:center;
@@ -387,8 +397,12 @@ select {
   font-size:22px;
   line-height:1
 }
-.add:hover {
+.add:hover:not(:disabled) {
   background:#69854a
+}
+.add:disabled {
+  opacity:.4;
+  cursor:not-allowed
 }
 .empty {
   grid-column:1/-1;

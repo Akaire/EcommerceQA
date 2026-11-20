@@ -9,7 +9,8 @@
     "bg": "#e7d8c3",
     "desc": "Cerâmica artesanal · 300 ml",
     "badge": "MAIS VENDIDO",
-    "isNew": false
+    "isNew": false,
+    "stock": 2
   },
   {
     "key": "bag",
@@ -21,7 +22,8 @@
     "bg": "#e5cfae",
     "desc": "Algodão reciclado · cor natural",
     "badge": "NOVO",
-    "isNew": true
+    "isNew": true,
+    "stock": 5
   },
   {
     "key": "vase",
@@ -33,7 +35,8 @@
     "bg": "#dce8d6",
     "desc": "Feito à mão · terracota",
     "badge": "",
-    "isNew": false
+    "isNew": false,
+    "stock": 3
   },
   {
     "key": "bottle",
@@ -45,7 +48,8 @@
     "bg": "#d6e4df",
     "desc": "Inox térmico · 500 ml",
     "badge": "",
-    "isNew": false
+    "isNew": false,
+    "stock": 4
   },
   {
     "key": "notebook",
@@ -57,7 +61,8 @@
     "bg": "#eee3bd",
     "desc": "Papel reciclado · 120 páginas",
     "badge": "",
-    "isNew": false
+    "isNew": false,
+    "stock": 5
   },
   {
     "key": "glasses",
@@ -69,7 +74,8 @@
     "bg": "#e9d6d0",
     "desc": "Acetato vegetal · proteção UV",
     "badge": "ÚLTIMAS PEÇAS",
-    "isNew": false
+    "isNew": false,
+    "stock": 1
   },
   {
     "key": "blanket",
@@ -81,7 +87,8 @@
     "bg": "#e8e6df",
     "desc": "Algodão orgânico · 1,2 × 1,6 m",
     "badge": "",
-    "isNew": false
+    "isNew": false,
+    "stock": 2
   },
   {
     "key": "pauseKit",
@@ -93,7 +100,8 @@
     "bg": "#e4ddc9",
     "desc": "Vela + sabonete botânico",
     "badge": "PRESENTEÁVEL",
-    "isNew": false
+    "isNew": false,
+    "stock": 4
   },
   {
     "key": "tray",
@@ -105,7 +113,8 @@
     "bg": "#e9ddc8",
     "desc": "Madeira de reflorestamento · 28 cm",
     "badge": "NOVO",
-    "isNew": true
+    "isNew": true,
+    "stock": 3
   },
   {
     "key": "wallet",
@@ -117,7 +126,8 @@
     "bg": "#e8d5c8",
     "desc": "Tecido reciclado · feita à mão",
     "badge": "NOVO",
-    "isNew": true
+    "isNew": true,
+    "stock": 2
   },
   {
     "key": "cap",
@@ -129,7 +139,8 @@
     "bg": "#dce3d7",
     "desc": "Algodão orgânico · ajuste confortável",
     "badge": "",
-    "isNew": false
+    "isNew": false,
+    "stock": 4
   },
   {
     "key": "diffuser",
@@ -141,7 +152,8 @@
     "bg": "#e3d9e9",
     "desc": "Aromas botânicos · 200 ml",
     "badge": "NOVO",
-    "isNew": true
+    "isNew": true,
+    "stock": 3
   },
   {
     "key": "soap",
@@ -153,7 +165,8 @@
     "bg": "#dce9e2",
     "desc": "Óleos vegetais · lavanda",
     "badge": "",
-    "isNew": false
+    "isNew": false,
+    "stock": 6
   },
   {
     "key": "planner",
@@ -165,7 +178,8 @@
     "bg": "#e8dfbd",
     "desc": "Papel certificado · visão semanal",
     "badge": "NOVO",
-    "isNew": true
+    "isNew": true,
+    "stock": 4
   },
   {
     "key": "pen",
@@ -177,7 +191,8 @@
     "bg": "#dbe4cf",
     "desc": "Corpo de bambu · tinta azul",
     "badge": "",
-    "isNew": false
+    "isNew": false,
+    "stock": 1
   },
   {
     "key": "pencilCase",
@@ -189,6 +204,7 @@
     "bg": "#e9d8d2",
     "desc": "Lona reciclada · compacto",
     "badge": "",
-    "isNew": false
+    "isNew": false,
+    "stock": 0
   }
 ]

@@ -1,9 +1,10 @@
 let products = []
 
 const CART_STORAGE_KEY = 'viva-cart'
+const STOCK_STORAGE_KEY = 'viva-stock'
 const FREE_SHIPPING_THRESHOLD = 199
 let categories = []
-let cart = JSON.parse(localStorage.getItem(CART_STORAGE_KEY) || '{}')
+let cart = {}
 let activeCategory = 'Todos'
 let toastTimer
 
@@ -50,7 +51,23 @@ function getVisibleProducts() {
     })
 }
 
+function getAvailableStock(product) {
+  return Math.max(product.stock - (cart[product.id] || 0), 0)
+}
+
+function getStockLabel(product) {
+  if (product.stock === 0) return 'Fora de estoque'
+
+  const available = getAvailableStock(product)
+  if (available === 0) return 'Limite de estoque na sacola'
+  if (available === 1) return 'Última unidade disponível'
+  return `${available} unidades disponíveis`
+}
+
 function renderProduct(product) {
+  const unavailable = product.stock === 0
+  const atStockLimit = getAvailableStock(product) === 0
+
   return `
     <article class="card" data-cy="product-card" data-is-new="${product.isNew}" data-product-id="${product.id}">
       <div class="photo" style="background:${product.bg}">
@@ -62,9 +79,10 @@ function renderProduct(product) {
         <div class="category">${product.category}</div>
         <h3>${product.name}</h3>
         <div class="desc">${product.desc}</div>
+        <div class="stock-status ${unavailable ? 'out-of-stock' : ''}" data-cy="stock-status" aria-live="polite">${getStockLabel(product)}</div>
         <div class="buyrow">
           <span class="price">${money(product.price)}</span>
-          <button class="add" data-cy="add-to-cart" data-action="add-to-cart" data-product-id="${product.id}" aria-label="Adicionar ${product.name} à sacola">+</button>
+          <button class="add" data-cy="add-to-cart" data-action="add-to-cart" data-product-id="${product.id}" aria-label="Adicionar ${product.name} à sacola" ${atStockLimit ? 'disabled' : ''}>+</button>
         </div>
       </div>
     </article>
@@ -91,15 +109,80 @@ function getCartSubtotal() {
 function persistCart() {
   localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart))
   updateCart()
+  updateProductAvailability()
+}
+
+function updateProductAvailability() {
+  document.querySelectorAll('[data-cy="product-card"]').forEach((card) => {
+    const product = products.find((item) => item.id === Number(card.dataset.productId))
+    if (!product) return
+
+    const status = card.querySelector('[data-cy="stock-status"]')
+    const addButton = card.querySelector('[data-cy="add-to-cart"]')
+    status.textContent = getStockLabel(product)
+    status.classList.toggle('out-of-stock', product.stock === 0)
+    addButton.disabled = getAvailableStock(product) === 0
+  })
+}
+
+function restoreStock(catalog) {
+  let savedStock
+  try {
+    savedStock = JSON.parse(localStorage.getItem(STOCK_STORAGE_KEY) || '{}')
+  } catch {
+    return catalog
+  }
+
+  if (!savedStock || typeof savedStock !== 'object' || Array.isArray(savedStock)) return catalog
+
+  return catalog.map((product) => {
+    const quantity = savedStock[product.id]
+    if (!Number.isInteger(quantity) || quantity < 0) return product
+    return { ...product, stock: Math.min(quantity, product.stock) }
+  })
+}
+
+function restoreCart() {
+  let savedCart
+  try {
+    savedCart = JSON.parse(localStorage.getItem(CART_STORAGE_KEY) || '{}')
+  } catch {
+    return {}
+  }
+
+  if (!savedCart || typeof savedCart !== 'object' || Array.isArray(savedCart)) return {}
+
+  return Object.fromEntries(products.flatMap((product) => {
+    const savedQuantity = Number(savedCart[product.id])
+    if (!Number.isFinite(savedQuantity) || savedQuantity < 1 || product.stock < 1) return []
+
+    const quantity = Math.min(Math.floor(savedQuantity), product.stock)
+    return [[product.id, quantity]]
+  }))
 }
 
 function addToCart(productId) {
+  const product = products.find((item) => item.id === productId)
+  if (!product || product.stock === 0) return
+  if ((cart[productId] || 0) >= product.stock) {
+    showToast('Limite de estoque atingido.')
+    return
+  }
+
   cart[productId] = (cart[productId] || 0) + 1
   persistCart()
   showToast('Produto adicionado à sacola!')
 }
 
 function changeQuantity(productId, amount) {
+  const product = products.find((item) => item.id === productId)
+  if (!product) return
+
+  if (amount > 0 && (cart[productId] || 0) >= product.stock) {
+    showToast('Limite de estoque atingido.')
+    return
+  }
+
   cart[productId] = (cart[productId] || 0) + amount
   if (cart[productId] <= 0) delete cart[productId]
   persistCart()
@@ -119,8 +202,8 @@ function renderCartItem(product) {
         <small>${money(product.price)}</small>
         <div class="qty">
           <button data-cy="quantity-decrease" data-action="decrease-quantity" data-product-id="${product.id}" aria-label="Diminuir ${product.name}">−</button>
-          <span>${cart[product.id]}</span>
-          <button data-cy="quantity-increase" data-action="increase-quantity" data-product-id="${product.id}" aria-label="Aumentar ${product.name}">+</button>
+          <span data-cy="cart-quantity">${cart[product.id]}</span>
+          <button data-cy="quantity-increase" data-action="increase-quantity" data-product-id="${product.id}" aria-label="Aumentar ${product.name}" ${cart[product.id] >= product.stock ? 'disabled' : ''}>+</button>
         </div>
       </div>
       <button class="remove" data-cy="remove-item" data-action="remove-item" data-product-id="${product.id}">Remover</button>
@@ -214,6 +297,13 @@ function finishOrder(event) {
   }
 
   const orderNumber = `VIVA-${Math.floor(10000 + Math.random() * 89999)}`
+  products = products.map((product) => ({
+    ...product,
+    stock: Math.max(product.stock - (cart[product.id] || 0), 0),
+  }))
+  localStorage.setItem(STOCK_STORAGE_KEY, JSON.stringify(
+    Object.fromEntries(products.map((product) => [product.id, product.stock])),
+  ))
   cart = {}
   persistCart()
   document.getElementById('modal').innerHTML = `
@@ -301,7 +391,9 @@ async function initializeStore() {
   const response = await fetch('/catalog.json')
   if (!response.ok) throw new Error('Não foi possível carregar o catálogo.')
 
-  products = await response.json()
+  products = restoreStock(await response.json())
+  cart = restoreCart()
+  localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart))
   categories = ['Todos', 'Novidades', ...new Set(products.map(({ category }) => category))]
   renderFilters()
   renderProducts()
