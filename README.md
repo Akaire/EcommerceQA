@@ -42,7 +42,13 @@ A loja fica em `http://127.0.0.1:4173`.
 - `cypress/support/page-objects/store.page.js` — locators e ações reutilizáveis
 - `cypress.config.cjs` — configuração de execução e retry em CI
 - `.github/workflows/cypress.yml` — execução em push e pull request
-- `docs/test-strategy.md` — escopo e limites da cobertura
+
+## Documentação do projeto
+
+- [`docs/README.md`](docs/README.md) — índice dos documentos do projeto
+- [`docs/TODO.md`](docs/TODO.md) — melhorias concluídas e próximas tarefas
+- [`docs/PATCH_NOTES.md`](docs/PATCH_NOTES.md) — histórico de mudanças e correções
+- [`docs/test-strategy.md`](docs/test-strategy.md) — escopo, cobertura e limites dos testes
 
 ## Cobertura
 

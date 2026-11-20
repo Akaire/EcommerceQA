@@ -59,3 +59,8 @@ Validação Cypress: teste da sacola executado localmente pelo usuário com suce
 - Pedidos confirmados agora reduzem o estoque simulado e salvam o saldo no `localStorage`, que permanece após recarregar a página.
 - Os testes começam com estoque limpo e cobrem a redução após uma compra.
 - A documentação esclarece que esse saldo é local ao navegador e não representa inventário compartilhado.
+
+### Documentação centralizada
+
+- TODO e patch notes foram movidos para `docs/`, junto da estratégia de testes.
+- Adicionado um índice em `docs/README.md` e links para a documentação no README principal.
